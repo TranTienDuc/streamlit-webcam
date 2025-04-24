@@ -7,7 +7,7 @@ st.set_page_config(page_title="Webcam App", layout="wide")
 
 def video_frame_callback(frame):
     img = frame.to_ndarray(format="bgr24")
-    img = cv2.flip(img,1)
+    img = cv2.flip(img,0)
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 col1, col2 = st.columns(2)
