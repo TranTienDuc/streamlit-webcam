@@ -1,4 +1,5 @@
 import threading
+import av
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
 import cv2
@@ -13,7 +14,7 @@ def video_frame_callback(frame):
     with lock:
         imgout = cv2.flip(imgin,1)
         img_container["imgout"] = imgout
-    return imgout
+    return av.VideoFrame.from_ndarray(imgout, format="bgr24")
 
 col1, col2 = st.columns(2)
 
