@@ -1,4 +1,5 @@
 import threading
+import time
 import av
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
@@ -49,12 +50,14 @@ with col1:
                 async_processing=True
           )
 
-imgout_place = col2.empty()
+with col2:
+    image_placeholder = st.empty()
 
-while ctx.state.playing:
-    with lock:
-        img = img_container["img"]
-    if img is None:
-        continue
-    imgout_place.image(img,channels='BGR')
-    
+if ctx:
+    while ctx.state.playing:
+        with lock:
+            img = img_container["img"]
+        if img is not None:
+            image_placeholder.image(img, channels="BGR", caption="Processed Frame (Flipped)")
+        time.sleep(0.05)
+        
