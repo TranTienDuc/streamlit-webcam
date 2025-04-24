@@ -19,7 +19,6 @@ def video_frame_callback(frame):
 
 col1, col2 = st.columns(2)
 
-ctx = None
 with col1:
     ctx = webrtc_streamer(
                 key="sample",
