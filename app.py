@@ -1,4 +1,3 @@
-import threading
 import av
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
@@ -6,15 +5,10 @@ import cv2
 
 st.set_page_config(page_title="Webcam App", layout="wide")
 
-lock = threading.Lock()
-img_container = {"imgout": None}
-
 def video_frame_callback(frame):
-    imgin = frame.to_ndarray(format="bgr24")
-    with lock:
-        imgout = cv2.flip(imgin,1)
-        img_container["imgout"] = imgout
-    return av.VideoFrame.from_ndarray(imgout, format="bgr24")
+    img = frame.to_ndarray(format="bgr24")
+    img = cv2.flip(img,1)
+    return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 col1, col2 = st.columns(2)
 
@@ -47,12 +41,3 @@ with col1:
                 },
                 async_processing=True
           )
-
-imgout_place = col2.empty()
-
-while ctx.state.playing:
-    with lock:
-        imgout = img_container["imgout"]
-    if imgout is None:
-        continue
-    imgout_place.image(imgout,channels='BGR')
