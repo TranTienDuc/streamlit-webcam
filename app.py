@@ -13,7 +13,7 @@ def video_frame_callback(frame):
     with lock:
         imgout = cv2.flip(imgin,1)
         img_container["imgout"] = imgout
-    return frame
+    return imgout
 
 col1, col2 = st.columns(2)
 
