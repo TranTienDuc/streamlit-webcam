@@ -1,6 +1,6 @@
 import threading
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer
+from streamlit_webrtc import webrtc_streamer, WebRtcMode
 import cv2
 
 st.set_page_config(page_title="Webcam App", layout="wide")
@@ -19,6 +19,7 @@ col1, col2 = st.columns(2)
 with col1:
     ctx = webrtc_streamer(
                 key="sample",
+                mode=WebRtcMode.SENDRECV,
                 media_stream_constraints={"video": True, "audio": False},
                 video_frame_callback=video_frame_callback,
                 rtc_configuration= 
@@ -41,7 +42,8 @@ with col1:
                                     "credential": "ktMeHfTxMPOhP6v+",
                                    },
                                    ]
-                }
+                },
+                async_processing=True
           )
 
 imgout_place = col2.empty()
