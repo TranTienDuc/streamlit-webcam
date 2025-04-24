@@ -6,12 +6,13 @@ import cv2
 st.set_page_config(page_title="Webcam App", layout="wide")
 
 lock = threading.Lock()
-img_container = {"imgin": None}
+img_container = {"imgout": None}
 
 def video_frame_callback(frame):
     imgin = frame.to_ndarray(format="bgr24")
     with lock:
-        img_container["imgin"] = imgin
+        imgout = cv2.flip(imgin,1)
+        img_container["imgout"] = imgout
     return
 
 col1, col2 = st.columns(2)
@@ -50,11 +51,7 @@ imgout_place = col2.empty()
 
 while ctx.state.playing:
     with lock:
-        imgin = img_container["imgin"]
-    if imgin is None:
+        imgout = img_container["imgout"]
+    if imgout is None:
         continue
-
-    # Đặt chương trình đóng khung khuôn mặt ở đây
-    imgout = cv2.flip(imgin,1)
-
     imgout_place.image(imgout,channels='BGR')
