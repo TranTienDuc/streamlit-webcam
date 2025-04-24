@@ -49,13 +49,12 @@ with col1:
                 async_processing=True
           )
 
-imgout_place = col2.empty()
 
 while ctx.state.playing:
     with lock:
         img = img_container["img"]
     if img is None:
         continue
-
+    imgout_place = col2.empty()
     imgout_place.image(img,channels='BGR')
     
